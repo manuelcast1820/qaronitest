@@ -18,7 +18,7 @@ class CreateEventsTable extends Migration
             $table->foreignId('categoryId')
                 ->constrained('categories');
             $table->dateTime('date')->nullable();
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->integer('capacity');
             $table->timestamps();
             $table->softDeletes();

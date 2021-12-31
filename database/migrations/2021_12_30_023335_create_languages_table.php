@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEventDescriptionsTable extends Migration
+class CreateLanguagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateEventDescriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('languages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('eventId')
-                ->constrained('categories');
-            $table->dateTime('date')->nullable();
-            $table->string('slug')->unique();
-            $table->integer('capacity');
+            $table->string('name');
+            $table->string('code');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -32,6 +28,6 @@ class CreateEventDescriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('event_descriptions');
+        Schema::dropIfExists('languages');
     }
 }
