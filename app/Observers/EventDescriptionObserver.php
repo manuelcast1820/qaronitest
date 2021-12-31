@@ -17,10 +17,26 @@ class EventDescriptionObserver
         //
     }
 
-    public function creating(EventDescription $event)
+    public function creating(EventDescription $eventDescription)
     {
-        
-        dd($event);
+        $olds = EventDescription::where('eventId',$eventDescription->eventId)
+        ->where('language',$eventDescription->language)->first();
+        if($olds != "" && $eventDescription->id != $olds->id){
+            $olds->name = $eventDescription->name;
+            $olds->save();
+            return false;
+        }
+    }
+
+    public function updating(EventDescription $eventDescription)
+    {
+        $olds = EventDescription::where('eventId',$eventDescription->eventId)
+        ->where('language',$eventDescription->language)->first();
+        if($olds != "" && $eventDescription->id != $olds->id){
+            $olds->name = $eventDescription->name;
+            $olds->save();
+            return false;
+        }
     }
 
     /**

@@ -32,10 +32,8 @@
 
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a href="{{ url('/') }}" class="nav-link">Eventos</a></li>
-                    <li class="nav-item"><a href="{{ url('/categories') }}"  class="nav-link">Categorias</a></li>
-                    <li class="nav-item"><a href="javascript:" data-toggle="modal" data-target="#exampleModal"
-                            class="nav-link activate-modal">Registrarse</a></li>
+                    <li class="nav-item active"><a href="{{ url('/events?language='.session('lang')) }}" class="nav-link">Eventos</a></li>
+                    <li class="nav-item"><a href="{{ url('/categories?language='.session('lang')) }}"  class="nav-link">Categorias</a></li>
                 </ul>
             </div>
         </div>
@@ -54,9 +52,10 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="bootstrap-datepicker.XX.js" charset="UTF-8"></script>
+    {{-- <script src="bootstrap-datepicker.XX.js" charset="UTF-8"></script> --}}
     <script src="{{ URL::asset('js/locales/bootstrap-datepicker.es.js') }}"></script>
     <script src="{{ URL::asset('js/locales/bootstrap-datepicker.gl.js') }}"></script>
+    <script src="{{ URL::asset('js/front.js') }}"></script>
     @stack('scripts')
 
 

@@ -12,10 +12,9 @@
                     </div>
                 @endif
                 <div class="col-md-12">
-                    <h2 style="text-align: center;">Editar Categoria</h2>
-
-                    {!! Form::model($category ,['route' => ['categories.update', $category->id], 'method' => 'patch']) !!}
-                    @include('front.categories.fields')
+                    <h2 style="text-align: center;">Editar Evento</h2>
+                    {!! Form::model($event ,['route' => ['events.update', $event->id], 'method' => 'patch']) !!}
+                    @include('front.events.fields')
                     {!! Form::close() !!}
                 </div>
             </div>

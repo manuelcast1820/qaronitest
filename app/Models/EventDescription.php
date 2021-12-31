@@ -43,7 +43,7 @@ class EventDescription extends Model
 
     public function event()
     {
-        return $this->belongsTo(Event::class, 'id', 'eventId');
+        return $this->belongsTo(Event::class, 'eventId', 'id');
     }
 
 

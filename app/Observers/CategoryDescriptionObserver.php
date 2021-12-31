@@ -20,16 +20,22 @@ class CategoryDescriptionObserver
 
     public function creating(CategoryDescription $categoryDescription)
     {
-        
-        $olds = CategoryDescription::where('language',$categoryDescription->language)->first();
-        
-        if($olds != ""){
-            $category = Category::find($olds->categoryId);            
-            $category->slug = Category::find($categoryDescription->categoryId)->slug;
-            $category->description->name = $categoryDescription->name;
-            $category->save();
-            $category->description->save();
-            Category::destroy($categoryDescription->categoryId);
+        $olds = CategoryDescription::where('categoryId',$categoryDescription->categoryId)
+        ->where('language',$categoryDescription->language)->first();
+        if($olds != "" && $categoryDescription->id != $olds->id){
+            $olds->name = $categoryDescription->name;
+            $olds->save();
+            return false;
+        }
+    }
+
+    public function updating(CategoryDescription $categoryDescription)
+    {
+        $olds = CategoryDescription::where('categoryId',$categoryDescription->categoryId)
+        ->where('language',$categoryDescription->language)->first();
+        if($olds != "" && $categoryDescription->id != $olds->id){
+            $olds->name = $categoryDescription->name;
+            $olds->save();
             return false;
         }
     }

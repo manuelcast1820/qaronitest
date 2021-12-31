@@ -43,7 +43,7 @@ class CategoryDescription extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'id', 'categoryId');
+        return $this->belongsTo(Category::class,'categoryId', 'id');
     }
 
 

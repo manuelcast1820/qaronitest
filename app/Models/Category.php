@@ -42,7 +42,7 @@ class Category extends Model
 
     public function description()
     {
-        return $this->hasOne(CategoryDescription::class, 'categoryId','id');
+        return $this->hasMany(CategoryDescription::class, 'categoryId','id');
     }
 
 

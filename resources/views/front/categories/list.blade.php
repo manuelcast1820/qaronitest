@@ -20,12 +20,12 @@
                         <tbody>
                             @foreach ($categories as $item)
                                 <tr>
-                                    <th style="font-weight: normal;">{{ $item->slug }}</th>
-                                    <th>{{ $item->description->name }}</th>
-                                    <th>{{ App\Models\Language::where('code', $item->description->language)->first()->name }}
+                                    <th style="font-weight: normal;">{{ $item->category->slug }}</th>
+                                    <th>{{ $item->name }}</th>
+                                    <th>{{ App\Models\Language::where('code', $item->language)->first()->name }}
                                     </th>
 
-                                    <th><a href="{{url('/categories/'.$item->id.'/edit')}}">Editar</a></th>
+                                    <th><a href="{{url('/categories/'.$item->categoryId.'/edit')}}">Editar</a></th>
 
                                 </tr>
                             @endforeach

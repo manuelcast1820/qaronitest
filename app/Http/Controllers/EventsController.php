@@ -12,16 +12,17 @@ use Illuminate\Http\Request;
 
 class EventsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::all();
+        $events = EventDescription::where('language',$request->language)->get();;
         return view('front.welcome',compact('events'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $event = new EventDescription();
-        return view('front.events.create',compact('event'));
+        $language = $request->language;
+        return view('front.events.create',compact('event','language'));
     }
 
     public function store(EventRequest $request)
@@ -33,21 +34,56 @@ class EventsController extends Controller
         $data['date'] = $date;
         $event->fill($data);
         $event->save();
-        $event->description()->create($datadescription["description"]);
 
-        // $result = $event->isValid();
-
-        // $events = $request->
-        // $category->slug = $request->slug;   
-        // $category->save();
-        // $description = new CategoryDescription();
-        // $description->name = $request->description['name'];
-        // $description->language = $request->description['language'];
-        // $description->categoryId = $category->id;
-        // $description->save();
-        return redirect('/categories');
-
+        $datadescription = $request->only('json_description');
+        if(count(json_decode($datadescription['json_description'])) > 0){
+            foreach(json_decode($datadescription['json_description']) as $item){
+                $description = new EventDescription();
+                $description->eventId = $event->id;
+                $description->language = $item->language;
+                $description->name = $item->name;
+                $description->save();
+            }
+        }
+        return redirect('/events?language='.session('lang'));
     }
+
+    public function edit($id,Request $request)
+    {
+        $language = $request->language;
+        $event = Event::find($id);
+        return view('front.events.edit',compact('event','language'));
+    }
+
+    public function show($id)
+    {
+        $event = Event::find($id);
+        return response()->json([ 'event' => $event ]);
+    }
+
+    public function update($id,EventRequest $request)
+    {
+        $datadescription = $request->only('json_description');
+        $date = new Carbon($request->date);
+        $data['date'] = $date;
+        $event = Event::find($id);
+        $event->slug = $request->slug;  
+        $event->categoryId = $request->categoryId;
+        $event->date = $date;
+        $event->capacity = $request->capacity;
+        $event->save();
+        if(count(json_decode($datadescription['json_description'])) > 0){
+            foreach(json_decode($datadescription['json_description']) as $item){
+                $description = new EventDescription();
+                $description->eventId = $event->id;
+                $description->language = $item->language;
+                $description->name = $item->name;
+                $description->save();
+            }
+        }
+        return redirect('/events?language='.session('lang'));
+    }
+
 
 
 }

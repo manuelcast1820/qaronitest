@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with('description')->get();
+        $categories = CategoryDescription::where('language',$request->language)->get(); //Category::with('description')->get();
         return view('front.categories.list',compact('categories'));
     }
 
@@ -23,15 +23,22 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
+        $datadescription = $request->only('json_description');
         $category = new Category();
         $category->slug = $request->slug;   
         $category->save();
-        $description = new CategoryDescription();
-        $description->name = $request->description['name'];
-        $description->language = $request->description['language'];
-        $description->categoryId = $category->id;
-        $description->save();
-        return redirect('/categories');
+        
+        if(count(json_decode($datadescription['json_description'])) > 0){
+            foreach(json_decode($datadescription['json_description']) as $item){
+                $description = new CategoryDescription();
+                $description->categoryId = $category->id;
+                $description->language = $item->language;
+                $description->name = $item->name;
+                $description->save();
+            }
+        }
+
+        return redirect('/categories?language='.session('lang'));
 
     }
 
@@ -41,9 +48,28 @@ class CategoryController extends Controller
         return view('front.categories.edit',compact('category'));
     }
 
+    public function update($id,CategoryRequest $request)
+    {
+        $datadescription = $request->only('json_description');
+        $category = Category::find($id);
+        $category->slug = $request->slug;   
+        $category->save();
+        if(count(json_decode($datadescription['json_description'])) > 0){
+            foreach(json_decode($datadescription['json_description']) as $item){
+                $description = new CategoryDescription();
+                $description->categoryId = $category->id;
+                $description->language = $item->language;
+                $description->name = $item->name;
+                $description->save();
+            }
+        }
+        return redirect('/categories?language='.session('lang'));
+
+    }
+
 
     public function getCategories(Request $request){
-        $categories = Category::with('description')->get();
+        $categories = CategoryDescription::where('language',$request->language)->get();
         if ($request->search !== null) {
             $search = $request->search;
             $categories = $categories->filter(function ($item) use ($search) {

@@ -48,9 +48,8 @@ class Event extends Model
 
     public function description()
     {
-        return $this->hasOne(EventDescription::class, 'eventId','id');
+        return $this->hasMany(EventDescription::class, 'eventId','id');
     }
-
 
     /*
     |--------------------------------------------------------------------------
