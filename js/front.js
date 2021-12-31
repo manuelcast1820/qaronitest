@@ -37,6 +37,7 @@ function submitForm(idForm, redirect,message="") {
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                       })
+                      $("#closeModal").trigger('click');
                 }else{
                     window.location.replace($("#baseUrl").val() + redirect);
                 }

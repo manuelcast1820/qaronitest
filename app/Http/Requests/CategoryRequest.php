@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryRequest extends FormRequest
 {
@@ -21,8 +22,13 @@ class CategoryRequest extends FormRequest
     {
         return [
             'slug' => 'required',
-            'name' => 'required',
-            'language' => 'required',
+            'json_description' => function($attribute, $value, $fail) {
+                $fieldstep = json_decode($value);
+                if (count($fieldstep) == 0) {
+                    return true;
+                }
+                $this->validateDescription($fieldstep, $fail);
+            }
         ];
     }
 
@@ -33,5 +39,21 @@ class CategoryRequest extends FormRequest
             'name.required' => 'El nombre es obligatorio',
             'language.required' => 'El lenguage es obligatorio',
         ];
+    }
+
+    private function validateDescription($fieldstep, $fail){
+        foreach ($fieldstep as $key => $detail) {
+                    
+            $fieldDetailValidator = Validator::make((array)$detail, [
+                'name' => 'required',
+                'language' => 'required',
+            ],
+            [
+                'name.required' => 'El nombre de la categoria es obligatoria',
+                'language.required' => 'El lenguage es obligatorio',
+            ]
+            )->validate();
+
+       }
     }
 }

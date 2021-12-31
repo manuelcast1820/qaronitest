@@ -18,4 +18,10 @@ class LanguageController extends Controller
         }
         return response()->json($languages);
     }
+
+    public function changeLanguage(Request $request){
+        session(['lang' => $request->lang]);
+        $pathURL = str_replace("language=".$request->currentLang,"language=".$request->lang,$request->url);
+        echo $pathURL;
+    }
 }

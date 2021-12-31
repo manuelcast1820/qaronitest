@@ -5,10 +5,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 style="text-align: center;margin-bottom: 60px;">Categorias <a href="{{ url('/categories/create') }}"><i
-                                class="fas fa-plus-circle"></i> Nueva Categoria</a></h2>
+                    <h2 style="text-align: center;margin-bottom: 60px;">Categorias <a
+                            href="{{ url('/categories/create') }}"><i class="fas fa-plus-circle"></i> Nueva Categoria</a>
+                    </h2>
 
-                    <table  id="table" class="table">
+                    <table id="table" class="table">
                         <thead>
                             <tr>
                                 <th scope="col">Slug</th>
@@ -25,7 +26,13 @@
                                     <th>{{ App\Models\Language::where('code', $item->language)->first()->name }}
                                     </th>
 
-                                    <th><a href="{{url('/categories/'.$item->categoryId.'/edit')}}">Editar</a></th>
+                                    <th>
+                                        <p><a href="{{ url('/categories/' . $item->categoryId . '/edit') }}"><i class="fas fa-edit"></i></a>
+                                            <a style="margin-left:5%;" href="javascript:"
+                                                onclick="deleteItem('{{ $item->categoryId }}');"><i class="fas fa-trash"></i></a>
+                                        </p>
+                                        
+                                    </th>
 
                                 </tr>
                             @endforeach
@@ -57,6 +64,37 @@
                     <?php } ?>
                 });
             });
+
+            function deleteItem(id) {
+                var securitytoken = $('meta[name=csrf-token]').attr('content');
+                Swal.fire({
+                    title: '¿Estas seguro que deseas eliminar?',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Aceptar <i class="fa fa-thumbs-up"></i>',
+                    cancelButtonText: 'Cancelar <i class="fa fa-thumbs-down"></i>',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            cache: false,
+                            type: 'DELETE',
+                            url: '<?php echo url('/') ?>'+'/categories/' + id,
+                            data: {
+                                id: id,
+                                _token: securitytoken
+                            },
+                            success: function(data) {
+                                Swal.fire('Eliminado!', '', 'success');
+                                location.reload();
+                            },
+                            error: function() {
+                           
+                            }
+                        });
+                        
+                    }
+                })
+            }
         </script>
     @endpush
 

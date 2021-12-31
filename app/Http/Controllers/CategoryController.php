@@ -55,6 +55,10 @@ class CategoryController extends Controller
         $category->slug = $request->slug;   
         $category->save();
         if(count(json_decode($datadescription['json_description'])) > 0){
+            $countDescription = CategoryDescription::where('categoryId',$category->id)->count();
+            if(count(json_decode($datadescription['json_description'])) < $countDescription ){
+                $this->cleanCategoryDescription($category);
+            }
             foreach(json_decode($datadescription['json_description']) as $item){
                 $description = new CategoryDescription();
                 $description->categoryId = $category->id;
@@ -77,6 +81,17 @@ class CategoryController extends Controller
             });
         }
         return response()->json($categories);
+    }
+
+    private function cleanCategoryDescription(Category $category){
+        $descriptions = CategoryDescription::where('categoryId',$category->id)->delete();
+
+    }
+
+    public function destroy($id){
+        $description = CategoryDescription::where('categoryId',$id)->delete();
+        $category = Category::find($id);
+        $category->delete();
     }
 
 }

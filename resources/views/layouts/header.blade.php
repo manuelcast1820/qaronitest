@@ -15,13 +15,21 @@
     <link href="{{ url('/css/fontawesome/all.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.0/css/jquery.dataTables.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"  />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+    <style>
+        .form-control {
+            height: 30px !important;
+            font-size: 12px;
+        }
 
+    </style>
 </head>
 
 <body>
 
-    <nav style="background: #002941!important;height: 90px;float:left;width:100%;position: inherit;" class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <nav style="background: #002941!important;height: 90px;float:left;width:100%;position: inherit;"
+        class="navbar  navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}"><img style="width: 200px;margin-top: -10px;"
                     src="/img/logoqaroni.svg" /></a>
@@ -32,8 +40,22 @@
 
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a href="{{ url('/events?language='.session('lang')) }}" class="nav-link">Eventos</a></li>
-                    <li class="nav-item"><a href="{{ url('/categories?language='.session('lang')) }}"  class="nav-link">Categorias</a></li>
+                    <li class="nav-item active"><a href="{{ url('/events?language=' . session('lang')) }}"
+                            class="nav-link">Eventos</a></li>
+                    <li class="nav-item"><a href="{{ url('/categories?language=' . session('lang')) }}"
+                            class="nav-link">Categorias</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{{ url('/') }}" id="navbarDropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Idiomas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a onclick="changeLanguage('es')" class="dropdown-item" href="#">Español</a></li>
+                            <li><a onclick="changeLanguage('gl')" class="dropdown-item" href="#">Gallego</a></li>
+                            <li><a onclick="changeLanguage('en')" class="dropdown-item" href="#">Ingles</a></li>
+
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -56,6 +78,28 @@
     <script src="{{ URL::asset('js/locales/bootstrap-datepicker.es.js') }}"></script>
     <script src="{{ URL::asset('js/locales/bootstrap-datepicker.gl.js') }}"></script>
     <script src="{{ URL::asset('js/front.js') }}"></script>
+    <script>
+        function changeLanguage(lang) {
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '<?php echo url('/'); ?>' + '/change-language',
+                data: {
+                    lang: lang,
+                    _token: $('meta[name=csrf-token]').attr('content'),
+                    url : window.location.href,
+                    currentLang: '<?php echo session('lang'); ?>'
+                },
+                success: function(data) {
+                    console.log(data)
+                    window.location.href=data;
+                },
+                error: function(err) {
+                    console.log(err)
+                }
+            });
+        }
+    </script>
     @stack('scripts')
 
 

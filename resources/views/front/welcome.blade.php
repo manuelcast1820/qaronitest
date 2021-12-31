@@ -30,11 +30,16 @@
                                     <th>
                                         <p>
                                             <a
-                                                href="{{ url('/events/' . $item->eventId . '/edit?language=' . session('lang')) }}">Editar</a>
+                                                href="{{ url('/events/' . $item->eventId . '/edit?language=' . session('lang')) }}"><i class="fas fa-edit"></i></a>
+                                            <a style="margin-left:5%;" href="javascript:"
+                                                onclick="deleteItem('{{ $item->eventId }}');"><i
+                                                    class="fas fa-trash"></i></a>
                                         </p>
-                                        <p><button type="button" class="btn btn-primary" onclick="openModal('{{$item->eventId}}');" data-toggle="modal" data-target="#modalEvent"
-                                            data-route="{{ url('/events/' . $item->eventId) }}" 
-                                                href="#">Comprar Entrada</button>
+                                        <p><button type="button" class="btn btn-primary"
+                                                onclick="openModal('{{ $item->eventId }}');" data-toggle="modal"
+                                                data-target="#modalEvent"
+                                                data-route="{{ url('/events/' . $item->eventId) }}" href="#">Comprar
+                                                Entrada</button>
                                         </p>
                                     </th>
                                 </tr>
@@ -65,6 +70,37 @@
                     <?php } ?>
                 });
             });
+
+            function deleteItem(id) {
+                var securitytoken = $('meta[name=csrf-token]').attr('content');
+                Swal.fire({
+                    title: '¿Estas seguro que deseas eliminar?',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Aceptar <i class="fa fa-thumbs-up"></i>',
+                    cancelButtonText: 'Cancelar <i class="fa fa-thumbs-down"></i>',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            cache: false,
+                            type: 'DELETE',
+                            url: '<?php echo url('/') ?>'+'/events/' + id,
+                            data: {
+                                id: id,
+                                _token: securitytoken
+                            },
+                            success: function(data) {
+                                Swal.fire('Eliminado!', '', 'success');
+                                location.reload();
+                            },
+                            error: function() {
+                           
+                            }
+                        });
+                        
+                    }
+                })
+            }
         </script>
     @endpush
 

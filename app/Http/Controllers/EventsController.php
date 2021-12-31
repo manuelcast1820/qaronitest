@@ -20,7 +20,7 @@ class EventsController extends Controller
 
     public function create(Request $request)
     {
-        $event = new EventDescription();
+        $event = new Event();
         $language = $request->language;
         return view('front.events.create',compact('event','language'));
     }
@@ -82,6 +82,12 @@ class EventsController extends Controller
             }
         }
         return redirect('/events?language='.session('lang'));
+    }
+
+    public function destroy($id){
+        $description = EventDescription::where('eventId',$id)->delete();
+        $category = Event::find($id);
+        $category->delete();
     }
 
 

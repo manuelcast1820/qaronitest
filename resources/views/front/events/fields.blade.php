@@ -1,3 +1,12 @@
+<?php
+$descriptionOld ="";
+if(!empty(old('json_description')) && old('json_description') !=""){
+    $descriptionOld = old('json_description');
+    $event->description = json_decode($descriptionOld);
+}
+
+?>
+
 <div class="row">
     <div class="form-group col-sm-3">
         <label for="slug" class="col-sm-12 col-form-label">Slug</label>

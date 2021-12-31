@@ -4,7 +4,7 @@
             <div style="border: 0px;" class="modal-header">
                 <h2 class="modal-title" style="text-align: center;float: left;
         width: 100%;color: #e5b250;" id="modalEventLabel">Compra las entradas</h2>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button id="closeModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -34,7 +34,7 @@
       border:0px;width: 100%;" class="modal-footer">
                 <a style="background: #e5b250!important;border: 1px solid #3d2c19!important;"
                     onclick="submitForm('assistants','/event-assistants')" id="submitButton"
-                    class="btn btn-primary submitButton">Entrar</a>
+                    class="btn btn-primary submitButton">Guardar</a>
             </div>
         </div>
     </div>

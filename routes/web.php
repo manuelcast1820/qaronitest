@@ -26,4 +26,5 @@ Route::group([
     Route::get('/get-languages', 'LanguageController@getLanguages');
     Route::get('/get-categories', 'CategoryController@getCategories');
     Route::post('/event-assistants', 'EventAssistantController@saveAssistant');
+    Route::post('/change-language', 'LanguageController@changeLanguage');
 });
