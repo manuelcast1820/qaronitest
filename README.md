@@ -21,4 +21,12 @@ php artisan db:seed
 
 activar la cola de trabajo con el comando
 
+NOTA:
+
+si tiene el servicio corriento en un contenedor docker puede correr el comando para dejar activa la cola de trabajo
+
 php artisan queue:listen
+
+Si va a utilizar el comando php artisan serve para correr el proyecto primero correr el comando nohup php artisan queue:work --daemon &
+ para dejar corriendo la cola de trabajo dentro de la carpeta del proyecto
+
